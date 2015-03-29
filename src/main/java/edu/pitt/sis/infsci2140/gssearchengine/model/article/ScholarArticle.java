@@ -1,5 +1,6 @@
 package edu.pitt.sis.infsci2140.gssearchengine.model.article;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -8,16 +9,26 @@ import java.util.Set;
 import java.util.TreeMap;
 
 
-public class ScholarArticle extends Article {
 
+
+/**
+ * 
+ * @author hongzhang
+ *
+ * A class representing articles listed on Google Scholar.  The class
+   provides basic dictionary-like behavior.
+ */
+
+public class ScholarArticle extends Article {
+	
 	//build a data structure to save the [value,label,ordering index]
-		public class Tuple{
+		public class Tuple<ContentType>{
 			private String tag;
-			private Object value;
+			private ContentType value;
 			private int num;
 			
 			//(1) the actual value, (2) a user-suitable label for the item, and (3) an ordering index:
-			Tuple(Object v, String t, int n){
+			Tuple(ContentType v, String t, int n){
 				value=v;
 				tag=t;
 				num=n;
@@ -31,11 +42,11 @@ public class ScholarArticle extends Article {
 				tag=s;
 			}
 			
-			public Object getValue(){
+			public ContentType getValue(){
 				return value;
 			}
 			
-			public void setValue(Object v){
+			public void setValue(ContentType v){
 				value=v;
 			}
 			
@@ -49,63 +60,76 @@ public class ScholarArticle extends Article {
 		}
 		
 		
-		public Tuple createTuple(Object value, String tag, int num) {
-			Tuple tuple = new Tuple(value, tag, num);
+		public Tuple<Integer> createTuple(int value, String tag, int num) {
+			Tuple<Integer> tuple = new Tuple<Integer>(value, tag, num);
+			return tuple;
+		}
+		
+		public Tuple<String> createTuple(String value, String tag, int num) {
+			Tuple<String> tuple = new Tuple<String>(value, tag, num);
 			return tuple;
 		}
 		
 		//use treemap to achieve thr data scuture like attr(key,value(value, tag/label, ordering index))
-		private static Map<String, Tuple> attr= new TreeMap<String, Tuple>(); 
+		@SuppressWarnings("rawtypes")
+		private  Map<String, Tuple> attrs= new TreeMap<String, Tuple>(); 
 		private String citationData;
 		
 		//A class representing articles listed on Google Scholar.  The class
 	    //provides basic dictionary-like behavior.
 		
-		public ScholarArticle(){
-			attr.put("title",createTuple("none","Title",0));
-			attr.put("url",createTuple("none","URL",1));
-			attr.put("year",createTuple("none","Year",2));
-			attr.put("num_citations",createTuple(0,"Citations",3));
-			attr.put("num_versions",createTuple(0,"Versions",4));
-			attr.put("cluster_id",createTuple("none","Cluster ID",5));
-			attr.put("url_pdf",createTuple("none","PDF link",6));
-			attr.put("url_citations",createTuple("none","Citations list",7));
-			attr.put("url_versions",createTuple("none","Versions list",8));
-			attr.put("url_citation",createTuple("none","Citation link",9));
-			attr.put("excerpt",createTuple("none","Excerpt",10));
-			
-			//The citation data in one of the standard export formats
-			citationData="";
+		public ScholarArticle() {
+			attrs.put("title",         createTuple(null, "Title",          0));
+			attrs.put("url",           createTuple(null, "URL",            1));
+			attrs.put("year",          createTuple(null, "Year",           2));
+			attrs.put("num_citations", createTuple(0,    "Citations",      3));
+			attrs.put("num_versions",  createTuple(0,    "Versions",       4));
+			attrs.put("cluster_id",    createTuple(null, "Cluster ID",     5));
+			attrs.put("url_pdf",       createTuple(null, "PDF link",       6));
+			attrs.put("url_citations", createTuple(null, "Citations list", 7));
+			attrs.put("url_versions",  createTuple(null, "Versions list",  8));
+			attrs.put("url_citation",  createTuple(null, "Citation link",  9));
+			attrs.put("excerpt",       createTuple(null, "Excerpt",       10));
 		}
 		
 		public Object getItem(String key){
-			if(attr.containsKey(key)){
-				return attr.get(key).getValue();
+			if(attrs.containsKey(key)){
+				return attrs.get(key).getValue();
 			}
 			return "none";
 		}
 		
 		public int getSize(){
-			return attr.size();
+			return attrs.size();
 		}
 		
-		public void setItem(String key, Object value){
-			if(attr.containsKey(key)){
-				attr.get(key).setValue(value);
+		@SuppressWarnings("unchecked")
+		public void setItem(String key, int value){
+			if(attrs.containsKey(key)){
+				attrs.get(key).setValue(value);
 			}else{
-				attr.put(key, this.createTuple(value, key, this.getSize()));
+				attrs.put(key, this.createTuple(value, key, this.getSize()));
 			}
 		}
 		
+		@SuppressWarnings("unchecked")
+		public void setItem(String key, String value){
+			if(attrs.containsKey(key)){
+				attrs.get(key).setValue(value);
+			}else{
+				attrs.put(key, this.createTuple(value, key, this.getSize()));
+			}
+		}
+		@SuppressWarnings("unchecked")
 		public void deleteItem(String key){
-			if(attr.containsKey(key)){
-				if(attr.get(key).getOrderNum()>10){
-					attr.remove(key);
+			if(attrs.containsKey(key)){
+				if(attrs.get(key).getOrderNum()>10){
+					attrs.remove(key);
 				}else{
-					if(attr.get(key).getOrderNum()==3||attr.get(key).getOrderNum()==4){
-						attr.get(key).setValue(0);
+					if(attrs.get(key).getOrderNum()==3||attrs.get(key).getOrderNum()==4){
+						attrs.get(key).setValue(0);
 					}else{
-						attr.get(key).setValue("none");
+						attrs.get(key).setValue("none");
 					}
 					
 				}
@@ -117,19 +141,20 @@ public class ScholarArticle extends Article {
 			this.citationData=citationData;
 		}
 		
+		@SuppressWarnings("rawtypes")
 		public String asTxt(){
-			Set<String> keys=attr.keySet();
+			Set<String> keys=attrs.keySet();
 			ArrayList<Tuple> t=new ArrayList<Tuple>();
 			for(String keyk:keys){
-				t.add(attr.get(keyk));
+				t.add(attrs.get(keyk));
 			}
 			Collections.sort(t, new tupleCompare());
 			
 			int max_label_len=0;
 			
 			for(String keyk:keys){
-				if(max_label_len<attr.get(keyk).getTag().length()){
-					max_label_len=attr.get(keyk).getTag().length();
+				if(max_label_len<attrs.get(keyk).getTag().length()){
+					max_label_len=attrs.get(keyk).getTag().length();
 				}
 			}
 			StringBuilder sb=new StringBuilder();
@@ -147,11 +172,11 @@ public class ScholarArticle extends Article {
 		public String asCsv(boolean header){
 			
 			ArrayList<String[]> list=new ArrayList<String[]>();
-			Set<String> keys=attr.keySet();
+			Set<String> keys=attrs.keySet();
 			for(String keyk:keys){
 				String[] pair=new String[2];
 				pair[0]=keyk;
-				pair[1]=String.valueOf(attr.get(keyk).getOrderNum());
+				pair[1]=String.valueOf(attrs.get(keyk).getOrderNum());
 				list.add(pair);
 				
 			}
@@ -172,7 +197,7 @@ public class ScholarArticle extends Article {
 			}
 			
 			for(int i=0;i<k.length;i++){
-				sb.append(attr.get(k[i]).getValue()+"|");
+				sb.append(attrs.get(k[i]).getValue()+"|");
 				sb.append("\n");
 			}
 			sb.deleteCharAt(sb.length()-2);
@@ -204,6 +229,7 @@ public class ScholarArticle extends Article {
 		
 		
 		//use to compare tuple
+		@SuppressWarnings("rawtypes")
 		private class tupleCompare implements Comparator<Tuple>{
 			public int compare(Tuple r1, Tuple r2) {
 				if(r1.getOrderNum()>r2.getOrderNum()){
@@ -231,15 +257,6 @@ public class ScholarArticle extends Article {
 			
 		}
 		
-		public static void main(String[] args){
-			ScholarArticle sa=new ScholarArticle();
-			
-			sa.setItem("title", "QUANT");
-			sa.deleteItem("title");
-			sa.setItem("title", "QUANT");
-			sa.setItem("year", 1923);
-			sa.deleteItem("year");
-			sa.setItem("year", 1923);
-			System.out.println(sa.asCsv(true));
-		}
+
+
 }

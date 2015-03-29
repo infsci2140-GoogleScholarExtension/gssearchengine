@@ -143,15 +143,7 @@ public abstract class ScholarQuery extends Query{
 		}
 		
 	}
-	
 
-//	public static void main(String[] args){
-//		ScholarQuery sq=new ScholarQuery();
-//		System.out.println(sq.getValue("fuck"));
-//		sq.addAttributeType("title", 0, "title");
-//		sq.addAttributeType("cit", 0, "cit");
-//		sq.setValue("title", "mubook");
-//		System.out.println(sq.getValue("title"));
-//		
-//	}
+
+
 }

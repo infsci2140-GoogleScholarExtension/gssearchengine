@@ -44,15 +44,4 @@ public class ClusterScholarQuery extends ScholarQuery{
 			
 	}
 	
-	public static void main(String[] args){
-		ClusterScholarQuery sq=new ClusterScholarQuery("17749203648027613321");
-		//sq.setCluster(10011);
-		
-		//System.out.println(sq.cluster);
-		sq.setNumPageResult(10);
-		System.out.println(sq.getUrl());
-		
-		
-	}
-	
 }

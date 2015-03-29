@@ -212,7 +212,7 @@ public class ScholarQuerier extends Querier {
 		
 		private ScholarQuerier querier = null;
 		
-		public Parser(ScholarQuerier querier, html) {
+		public Parser(ScholarQuerier querier,String html) {
 			super(html);
 			this.querier = querier;
 		}

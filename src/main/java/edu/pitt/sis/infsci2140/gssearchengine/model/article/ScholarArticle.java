@@ -196,11 +196,12 @@ public class ScholarArticle extends Article {
 				sb.append("\n");
 			}
 			
+			
 			for(int i=0;i<k.length;i++){
 				sb.append(attrs.get(k[i]).getValue()+"|");
-				sb.append("\n");
+				
 			}
-			sb.deleteCharAt(sb.length()-2);
+			sb.deleteCharAt(sb.length()-1);
 			
 			return sb.toString();
 		}

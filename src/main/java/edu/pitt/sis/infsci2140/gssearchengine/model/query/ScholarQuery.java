@@ -4,55 +4,61 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+
 public abstract class ScholarQuery extends Query{
 
 	//build a data structure to save the [value,label,ordering index]
-	public class Tuple{
-		private String tag;
-		private Object value;
-		private int num;
-		
-		//(1) the actual value, (2) a user-suitable label for the item, and (3) an ordering index:
-		Tuple(Object v, String t, int n){
-			value=v;
-			tag=t;
-			num=n;
-		}
-		
-		public String getTag(){
-			return tag;
-		}
-		
-		public void setTag(String s){
-			tag=s;
-		}
-		
-		public Object getValue(){
-			return value;
-		}
-		
-		public void setValue(Object v){
-			value=v;
-		}
-		
-		public int getOrderNum(){
-			return num;
-		}
-		
-		public void setOrderNum(int n){
-			num=n;
-		}
-	}
-	
-	
-	public Tuple createTuple(Object value, String tag, int num) {
-		Tuple tuple = new Tuple(value, tag, num);
-		return tuple;
-	}
-	
+			public class Tuple<ContentType>{
+				private String tag;
+				private ContentType value;
+				private int num;
+				
+				//(1) the actual value, (2) a user-suitable label for the item, and (3) an ordering index:
+				Tuple(ContentType v, String t, int n){
+					value=v;
+					tag=t;
+					num=n;
+				}
+				
+				public String getTag(){
+					return tag;
+				}
+				
+				public void setTag(String s){
+					tag=s;
+				}
+				
+				public ContentType getValue(){
+					return value;
+				}
+				
+				public void setValue(ContentType v){
+					value=v;
+				}
+				
+				public int getOrderNum(){
+					return num;
+				}
+				
+				public void setOrderNum(int n){
+					num=n;
+				}
+			}
+			
+			
+			public Tuple<Integer> createTuple(int value, String tag, int num) {
+				Tuple<Integer> tuple = new Tuple<Integer>(value, tag, num);
+				return tuple;
+			}
+			
+			public Tuple<String> createTuple(String value, String tag, int num) {
+				Tuple<String> tuple = new Tuple<String>(value, tag, num);
+				return tuple;
+			}
     
      //use treemap to achieve thr data scuture like attr(key,value(value, tag/label, ordering index))
-	public static Map<String, Tuple> attr= new TreeMap<String, Tuple>(); 
+	@SuppressWarnings("rawtypes")
+	public  Map<String, Tuple> attr= new TreeMap<String, Tuple>(); 
 	
 	//The number of results requested from Scholar -- not the total number of results it reports
 	private int NumOfResult;
@@ -74,7 +80,8 @@ public abstract class ScholarQuery extends Query{
 	 * Adds a new type of attribute to the list of attributes understood by this query. 
      * Meant to be used by the constructors in derived classes.
 	 */
-	public void addAttributeType(String key, Object value, String tag){
+	@SuppressWarnings("rawtypes")
+	public void addAttributeType(String key, int value, String tag){
 		if(attr.size()==0){
 			Tuple t=createTuple(value, tag, 0);
 			attr.put(key, t);
@@ -93,6 +100,29 @@ public abstract class ScholarQuery extends Query{
 	}
 	
 	
+	/*
+	 * Adds a new type of attribute to the list of attributes understood by this query. 
+     * Meant to be used by the constructors in derived classes.
+	 */
+	public void addAttributeType(String key, String value, String tag){
+		if(attr.size()==0){
+			@SuppressWarnings("rawtypes")
+			Tuple t=createTuple(value, tag, 0);
+			attr.put(key, t);
+		}else{
+			Set<String> keys=attr.keySet();
+			int max=0;
+			for(String keyk:keys){
+				if(max<attr.get(keyk).getOrderNum()){
+					max=attr.get(keyk).getOrderNum();
+				}
+			}
+			@SuppressWarnings("rawtypes")
+			Tuple t=createTuple(value, tag, max+1);
+			attr.put(key, t);
+		}
+		
+	}
 	//Getter for attribute ordering. Returns None if no such key
 	public Object getOrderNum(String key){
 		if(attr.containsKey(key)){
@@ -113,6 +143,7 @@ public abstract class ScholarQuery extends Query{
 	
 	
 	//Setter for attribute value. Does nothing if no such key
+	@SuppressWarnings("unchecked")
 	public void setValue(String key, Object v){
 		if(attr.containsKey(key)){
 			attr.get(key).setValue(v);

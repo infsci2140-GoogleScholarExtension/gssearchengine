@@ -202,8 +202,8 @@ public class ScholarQuerier extends Querier {
 	 */
 	public void parse(String html) {
 		
-		Parser parser = new Parser(this);
-		parser.parse(html);
+		Parser parser = new Parser(this, html);
+		parser.parse();
 	}
 	
 	
@@ -212,18 +212,16 @@ public class ScholarQuerier extends Querier {
 		
 		private ScholarQuerier querier = null;
 		
-		public Parser(ScholarQuerier querier) {
-			super();
+		public Parser(ScholarQuerier querier, html) {
+			super(html);
 			this.querier = querier;
 		}
 		
-		public void parse(String html) {
-			
-		}
+		
 		
 		public void handleNumResults(int num_results) {
 			if (querier != null && querier.query != null)
-				querier.query.setNumOfResult(num_results);
+				querier.query.setNumPageResult(num_results);
 		}
 		
 		public void handleArticles(ScholarArticle art) {

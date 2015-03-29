@@ -157,24 +157,4 @@ public class SearchScholarQuery extends ScholarQuery{
 		return scholarQueryUrl;
 	}
 	
-	public static void main(String[] args){
-		SearchScholarQuery sq=new SearchScholarQuery();
-		//sq.setCluster(10011);
-		sq.setAuthor("albert einstein");
-		sq.setIncludeCitations(true);
-		sq.setIncludePatents(false);
-		//sq.setNoneWords("fuck");
-		sq.setNumPageResult(3);
-		//sq.setPub(1912);
-		sq.setPhrase("quantum theory");
-		//sq.setScope(true);
-		//sq.setSomeWords("lunch");
-		sq.setTimeframe(1993, 0);
-		//sq.setWords("quantum");
-		//System.out.println(sq.cluster);
-		//sq.setNumPageResult(10);
-		System.out.println(sq.getUrl());
-		
-		
-	}
 }

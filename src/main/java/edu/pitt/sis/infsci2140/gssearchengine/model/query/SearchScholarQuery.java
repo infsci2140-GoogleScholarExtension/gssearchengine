@@ -100,6 +100,13 @@ public class SearchScholarQuery extends ScholarQuery{
 			return "search query needs more parameters";
 		}
 		
+		/*
+		 * If we have some-words or none-words lists, we need to
+		 * process them so GS understands them. For simple
+		 * space-separeted word lists, there's nothing to do. For lists
+		 * of phrases we have to ensure quotations around the phrases,
+		 * separating them by whitespace.
+		 */
 		if(someWords!=null){
 			this.someWords=this.parenthesizePhrases(someWords);
 		}

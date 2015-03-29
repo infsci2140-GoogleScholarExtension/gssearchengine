@@ -8,53 +8,53 @@ import java.util.TreeMap;
 public abstract class ScholarQuery extends Query{
 
 	//build a data structure to save the [value,label,ordering index]
-			public class Tuple<ContentType>{
-				private String tag;
-				private ContentType value;
-				private int num;
-				
-				//(1) the actual value, (2) a user-suitable label for the item, and (3) an ordering index:
-				Tuple(ContentType v, String t, int n){
-					value=v;
-					tag=t;
-					num=n;
-				}
-				
-				public String getTag(){
-					return tag;
-				}
-				
-				public void setTag(String s){
-					tag=s;
-				}
-				
-				public ContentType getValue(){
-					return value;
-				}
-				
-				public void setValue(ContentType v){
-					value=v;
-				}
-				
-				public int getOrderNum(){
-					return num;
-				}
-				
-				public void setOrderNum(int n){
-					num=n;
-				}
-			}
-			
-			
-			public Tuple<Integer> createTuple(int value, String tag, int num) {
-				Tuple<Integer> tuple = new Tuple<Integer>(value, tag, num);
-				return tuple;
-			}
-			
-			public Tuple<String> createTuple(String value, String tag, int num) {
-				Tuple<String> tuple = new Tuple<String>(value, tag, num);
-				return tuple;
-			}
+	public class Tuple<ContentType>{
+		private String tag;
+		private ContentType value;
+		private int num;
+		
+		//(1) the actual value, (2) a user-suitable label for the item, and (3) an ordering index:
+		Tuple(ContentType v, String t, int n){
+			value=v;
+			tag=t;
+			num=n;
+		}
+		
+		public String getTag(){
+			return tag;
+		}
+		
+		public void setTag(String s){
+			tag=s;
+		}
+		
+		public ContentType getValue(){
+			return value;
+		}
+		
+		public void setValue(ContentType v){
+			value=v;
+		}
+		
+		public int getOrderNum(){
+			return num;
+		}
+		
+		public void setOrderNum(int n){
+			num=n;
+		}
+	}
+	
+	
+	public Tuple<Integer> createTuple(int value, String tag, int num) {
+		Tuple<Integer> tuple = new Tuple<Integer>(value, tag, num);
+		return tuple;
+	}
+	
+	public Tuple<String> createTuple(String value, String tag, int num) {
+		Tuple<String> tuple = new Tuple<String>(value, tag, num);
+		return tuple;
+	}
     
      //use treemap to achieve thr data scuture like attr(key,value(value, tag/label, ordering index))
 	@SuppressWarnings("rawtypes")

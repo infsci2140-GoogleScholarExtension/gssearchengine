@@ -1,7 +1,7 @@
 package edu.pitt.sis.infsci2140.gssearchengine.model.query;
 
 import edu.pitt.sis.infsci2140.gssearchengine.utils.conf.ScholarConf;
-import edu.pitt.sis.infsci2140.gssearchengine.utils.conf.ScholarUtils;
+
 
 public class ClusterScholarQuery extends ScholarQuery{
 
@@ -25,9 +25,9 @@ public class ClusterScholarQuery extends ScholarQuery{
 
 	//Sets search to a Google Scholar results cluster ID.
 	public void setCluster(String cluster){
-		String msg = "cluster ID must be numeric";
+		
 		this.cluster=cluster;
-		//this.cluster=ScholarUtils.ensure_int(cluster, msg);
+		
 	}
 
 	public String getUrl(){

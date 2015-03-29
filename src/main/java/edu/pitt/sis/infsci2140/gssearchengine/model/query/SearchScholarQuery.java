@@ -1,7 +1,6 @@
 package edu.pitt.sis.infsci2140.gssearchengine.model.query;
 
 import edu.pitt.sis.infsci2140.gssearchengine.utils.conf.ScholarConf;
-import edu.pitt.sis.infsci2140.gssearchengine.utils.conf.ScholarUtils;
 
 
 public class SearchScholarQuery extends ScholarQuery{
@@ -67,14 +66,14 @@ public class SearchScholarQuery extends ScholarQuery{
     //It's fine to specify just start or end, or both.
 	public void setTimeframe(int start, int end){
 		if(start>0){
-			//start=ScholarUtils.ensure_int(start);
+			
 			this.timeFrame[0]=start;
 		}else{
 			this.timeFrame[0]=0;
 		}
 		
 		if(end>0){
-			//end=ScholarUtils.ensure_int(end);
+			
 			this.timeFrame[1]=end;
 		}else{
 			this.timeFrame[1]=0;

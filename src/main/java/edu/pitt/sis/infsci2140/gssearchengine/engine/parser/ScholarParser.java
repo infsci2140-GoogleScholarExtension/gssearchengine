@@ -29,7 +29,7 @@ public class ScholarParser extends Parser {
 	}
 
 	
-	public ArrayList<ScholarArticle> Parse()
+	public ArrayList<ScholarArticle> parse()
 	{		
 		if(getResultNum()>0)
 		{

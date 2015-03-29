@@ -72,4 +72,14 @@ public class ScholarQuery extends Query{
 		System.out.println(attr.get("name").getContent());
 		
 	}
+
+
+	public int getNumOfResult() {
+		return NumOfResult;
+	}
+
+
+	public void setNumOfResult(int numOfResult) {
+		NumOfResult = numOfResult;
+	}
 }

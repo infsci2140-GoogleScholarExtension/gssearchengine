@@ -121,7 +121,7 @@ public class ScholarQuerier extends Querier {
 	 * This method initiates a search query (a ScholarQuery instance) 
 	   with subsequent parsing of the response.
 	 */
-	public void sendQuery(ScholarQuery query) {
+	public ArrayList<ScholarArticle> sendQuery(ScholarQuery query) {
 		
 		this.clearArticles();
 		this.query = query;
@@ -129,17 +129,17 @@ public class ScholarQuerier extends Querier {
 		String html = null;
 		URL url = null;
 		try {
-			url = new URL(""); // query.get_url()
+			url = new URL(query.getUrl()); // query.get_url()
 		} catch (MalformedURLException e) {
 			ScholarUtils.log("erro", e.getMessage());
-			return;
+			return null;
 		}
 		html = this.getHttpResponse(url,
                 "dump of query response HTML",
                 "results retrieval failed");
-		if (html == null) return;
+		if (html == null) return null;
 		
-		this.parse(html);
+		return this.parse(html);
 	}
 	
 	
@@ -171,17 +171,20 @@ public class ScholarQuerier extends Querier {
 	 */
 	public Boolean getCitationData(ScholarArticle art) {
 		
-//		if article['url_citation'] is None:
-//            return False
-//        if article.citation_data is not None:
-//            return True
+		if (art.getItem("url_citation") == null) {
+			return false;
+		}	
+		if (art.getCitationData() != null) {
+			return true;
+		}
+			
 		
 		String data = null;
 		ScholarUtils.log("info", "retrieving citation export data");
 		
 		URL url = null;
 		try {
-			url = new URL(""); // article['url_citation']
+			url = new URL((String) art.getItem("url_citation")); // article['url_citation']
 		} catch (MalformedURLException e) {
 			ScholarUtils.log("erro", e.getMessage());
 			return false;
@@ -200,10 +203,10 @@ public class ScholarQuerier extends Querier {
 	 * 
 	 * This method allows parsing of provided HTML content
 	 */
-	public void parse(String html) {
+	public ArrayList<ScholarArticle> parse(String html) {
 		
 		Parser parser = new Parser(this, html);
-		parser.parse();
+		return parser.parse();
 	}
 	
 	
@@ -216,9 +219,7 @@ public class ScholarQuerier extends Querier {
 			super(html);
 			this.querier = querier;
 		}
-		
-		
-		
+			
 		public void handleNumResults(int num_results) {
 			if (querier != null && querier.query != null)
 				querier.query.setNumPageResult(num_results);

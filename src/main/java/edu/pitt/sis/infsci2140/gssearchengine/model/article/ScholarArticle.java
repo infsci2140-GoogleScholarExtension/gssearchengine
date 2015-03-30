@@ -141,6 +141,10 @@ public class ScholarArticle extends Article {
 			this.citationData=citationData;
 		}
 		
+		public String getCitationData(){
+			return citationData;
+		}
+		
 		@SuppressWarnings("rawtypes")
 		public String asTxt(){
 			Set<String> keys=attrs.keySet();

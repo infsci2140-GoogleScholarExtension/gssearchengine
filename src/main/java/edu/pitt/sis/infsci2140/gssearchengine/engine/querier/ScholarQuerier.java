@@ -30,13 +30,13 @@ public class ScholarQuerier extends Querier {
 	
 	private String GET_SETTINGS_URL = ScholarConf.SCHOLAR_SITE + "/scholar_settings?sciifh=1&hl=en&as_sdt=0,5";
 	private String SET_SETTINGS_URL = ScholarConf.SCHOLAR_SITE  + "/scholar_setprefs?q="
-																+ "&scisig=%(scisig)s"
+																+ "&scisig=%s"
 																+ "&inststart=0"
 																+ "&as_sdt=1,5"
 																+ "&as_sdtp="
-																+ "&num=%(num)s"
-																+ "&scis=%(scis)s"
-																+ "%(scisf)s"
+																+ "&num=%d"
+																+ "&scis=%s"
+																+ "%s"
 																+ "&hl=en&lang=all&instq=&inst=569367360547434339&save=";
 	
 	private ArrayList<ScholarArticle> articles = new ArrayList<ScholarArticle>();
@@ -109,6 +109,35 @@ public class ScholarQuerier extends Querier {
 			ScholarUtils.log("info", "parsing settings failed: no form");
 			return false;
 		}
+		
+		Elements input = doc.select("input[type=hidden]").select("[name=\"scisig\"]");
+		if (input == null) {
+			ScholarUtils.log("info", "parsing settings failed: scisig");
+			return false;
+		}
+		
+		String scisig = input.first().val();
+		int    num    = settings.getPer_page_results();
+		String scis   = "no";
+		String scisf  = "";
+
+		if (settings.getCitform() != 0) {
+			scis  = "yes";
+			scisf = "&scisf=" + settings.getCitform();
+		}
+		
+		
+		try {
+			String settingURL = String.format(SET_SETTINGS_URL, scisig, num, scis, scisf);
+			url = new URL(settingURL);
+		} catch (MalformedURLException e) {
+			ScholarUtils.log("erro", e.getMessage());
+			return false;
+		}
+		html = this.getHttpResponse(url,
+                "dump of settings result HTML",
+                "applying setttings failed");
+        if (html == null) return false;
 		
 		ScholarUtils.log("info", "settings applied");
 		return true;

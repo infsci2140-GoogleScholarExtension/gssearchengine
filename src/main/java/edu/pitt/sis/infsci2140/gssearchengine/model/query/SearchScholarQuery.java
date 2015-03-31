@@ -108,28 +108,29 @@ public class SearchScholarQuery extends ScholarQuery{
 		 * separating them by whitespace.
 		 */
 		if(someWords!=""){
-			this.someWords=this.splitWhiteSpace(someWords);
+			someWords=someWords.replaceAll(" ", "+");
 		}
 		
 		if(noneWords!=""){
-			//this.noneWords=this.parenthesizePhrases(noneWords);
-			this.noneWords=this.splitWhiteSpace(noneWords);
+			noneWords=noneWords.replaceAll(" ", "+");
 		}
 		
 		if(author!=""){
-			this.author=this.splitWhiteSpace(author);
+			author=author.replaceAll(" ", "+");
 			
 		}
 		if(words!=""){
-			this.words=this.splitWhiteSpace(words);
+			words=words.replaceAll(" ", "+");
 		}
+		
 		if(phrase!=""){
-			this.phrase=this.splitWhiteSpace(phrase);
+			phrase=phrase.replaceAll(" ", "+");
 		}
 		
 		if(pub!=""){
-			this.pub=this.splitWhiteSpace(pub);
+			pub=pub.replaceAll(" ", "+");
 		}
+		
 		String title="any";
 		if(this.scopeTitle){
 			title="title";

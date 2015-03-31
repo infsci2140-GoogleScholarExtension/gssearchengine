@@ -81,7 +81,7 @@ public class ScholarArticle extends Article {
 		public ScholarArticle() {
 			attrs.put("title",         createTuple(null, "Title",          0));
 			attrs.put("url",           createTuple(null, "URL",            1));
-			attrs.put("year",          createTuple(null, "Year",           2));
+			attrs.put("year",          createTuple(0,    "Year",           2));
 			attrs.put("num_citations", createTuple(0,    "Citations",      3));
 			attrs.put("num_versions",  createTuple(0,    "Versions",       4));
 			attrs.put("cluster_id",    createTuple(null, "Cluster ID",     5));
@@ -164,7 +164,7 @@ public class ScholarArticle extends Article {
 			StringBuilder sb=new StringBuilder();
 			
 			for(int i=0;i<t.size();i++){
-				if(t.get(i).getValue()!="none"||!t.get(i).getValue().equals(0)){
+				if(t.get(i).getValue()!="None"&&!t.get(i).getValue().equals(0)){
 					sb.append(t.get(i).getTag()+createSpace(max_label_len-t.get(i).getTag().length()+1));
 					sb.append(t.get(i).getValue());
 					sb.append("\n");

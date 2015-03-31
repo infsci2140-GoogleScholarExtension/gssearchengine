@@ -107,16 +107,25 @@ public class SearchScholarQuery extends ScholarQuery{
 		 * of phrases we have to ensure quotations around the phrases,
 		 * separating them by whitespace.
 		 */
-		if(someWords!=null){
-			this.someWords=this.parenthesizePhrases(someWords);
+		if(someWords!=""){
+			this.someWords=this.splitWhiteSpace(someWords);
 		}
 		
-		if(noneWords!=null){
-			this.noneWords=this.parenthesizePhrases(noneWords);
+		if(noneWords!=""){
+			//this.noneWords=this.parenthesizePhrases(noneWords);
+			this.noneWords=this.splitWhiteSpace(noneWords);
 		}
 		
-		if(author!=null){
+		if(author!=""){
 			this.author=this.splitWhiteSpace(author);
+		}
+		
+		if(phrase!=""){
+			this.phrase=this.splitWhiteSpace(phrase);
+		}
+		
+		if(pub!=""){
+			this.pub=this.splitWhiteSpace(pub);
 		}
 		String title="any";
 		if(this.scopeTitle){

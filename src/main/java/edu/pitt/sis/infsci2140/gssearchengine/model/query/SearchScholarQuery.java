@@ -118,6 +118,7 @@ public class SearchScholarQuery extends ScholarQuery{
 		
 		if(author!=""){
 			this.author=this.splitWhiteSpace(author);
+			
 		}
 		if(words!=""){
 			this.words=this.splitWhiteSpace(words);

@@ -35,10 +35,15 @@ public class ScholarParser extends Parser {
 		{
 			for(Element gs_r : doc.select("div.gs_r")) // gs_r contains one result
 			{
-				ScholarArticle article = new ScholarArticle();
-				getArticleInfo(gs_r,article);  //do parse the infomantion
-				articles.add(article);
+				if(gs_r.select("table[cellspacing]").size()==0)
+				{
+					ScholarArticle article = new ScholarArticle();
+					getArticleInfo(gs_r,article);  //do parse the infomantion
+					articles.add(article);
+				}
 			}
+			if(articles.size()==0)
+				articles=null;
 			return articles;
 		}
 		else
@@ -149,7 +154,7 @@ public class ScholarParser extends Parser {
 //			resultNum = Integer.valueOf(Num);
 //		}
 		resultNum=doc.select("div.gs_r").size();
-		System.out.println(resultNum);
+
 		
 		return resultNum;
 	}

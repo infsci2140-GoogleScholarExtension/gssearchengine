@@ -71,14 +71,18 @@ public class ScholarParser extends Parser {
 			title = gs_r.select("h3.gs_rt").text();           //get the title
 		}
 		
-		String years=gs_r.select("div.gs_a").text().split("-")[1];  // split by -, gs_a contains year
-		if(years.trim().contains(" "))    // if there is something else
+		if(gs_r.select("div.gs_a").text().split("-").length>2)
 		{
-			String[] y = years.split(" ");  //get rid of them
-			year = Integer.valueOf(y[y.length-1]);
+			String years=gs_r.select("div.gs_a").text().split("-")[1];  // split by -, gs_a contains year
+			if(years.trim().contains(" "))    // if there is something else
+			{
+				String[] y = years.split(" ");  //get rid of them
+				year = Integer.valueOf(y[y.length-1]);
+			}
+			else
+				year = Integer.valueOf(years.trim());  //get the year
 		}
-		else
-			year = Integer.valueOf(years.trim());  //get the year
+
 		
 		if(gs_r.select("div").first().className().contains("gs_ri"))  
 			url_pdf="";
@@ -132,16 +136,21 @@ public class ScholarParser extends Parser {
 	private int getResultNum()
 	{
 		int resultNum=0;
-		String gs_ab_md = doc.select("#gs_ab_md").text();  //the gs_ab_md contains the result information
+//		String gs_ab_md = doc.select("#gs_ab_md").text();  //the gs_ab_md contains the result information
+//		
+//		if (!gs_ab_md.contains("result"))
+//			resultNum=0;
+//		else
+//		{
+//			
+//			String Num = gs_ab_md.split(" ")[0];  //get the result number
+//			System.out.println(Num);
+//			Num=Num.replace(",", "");
+//			resultNum = Integer.valueOf(Num);
+//		}
+		resultNum=doc.select("div.gs_r").size();
+		System.out.println(resultNum);
 		
-		if (!gs_ab_md.contains("result"))
-			resultNum=0;
-		else
-		{
-			String Num = gs_ab_md.split(" ")[1];  //get the result number
-			Num=Num.replace(",", "");
-			resultNum = Integer.valueOf(Num);
-		}
 		return resultNum;
 	}
 	

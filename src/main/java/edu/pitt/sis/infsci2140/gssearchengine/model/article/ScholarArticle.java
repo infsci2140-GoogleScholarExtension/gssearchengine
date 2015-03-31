@@ -164,7 +164,7 @@ public class ScholarArticle extends Article {
 			StringBuilder sb=new StringBuilder();
 			
 			for(int i=0;i<t.size();i++){
-				if(t.get(i).getValue()!="none"){
+				if(t.get(i).getValue()!="none"||!t.get(i).getValue().equals(0)){
 					sb.append(t.get(i).getTag()+createSpace(max_label_len-t.get(i).getTag().length()+1));
 					sb.append(t.get(i).getValue());
 					sb.append("\n");

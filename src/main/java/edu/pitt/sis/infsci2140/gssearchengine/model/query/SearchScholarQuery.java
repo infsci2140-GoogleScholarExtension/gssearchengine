@@ -115,6 +115,9 @@ public class SearchScholarQuery extends ScholarQuery{
 			this.noneWords=this.parenthesizePhrases(noneWords);
 		}
 		
+		if(author!=null){
+			this.author=this.splitWhiteSpace(author);
+		}
 		String title="any";
 		if(this.scopeTitle){
 			title="title";
@@ -158,7 +161,7 @@ public class SearchScholarQuery extends ScholarQuery{
 				        +"&as_occt="+title+"&as_sauthors="+this.author
 				        +"&as_publication="+this.pub+"&as_ylo="+ylo
 				        +"&as_yhi="+yhi+"&as_sdt="+patent
-				        +"&as_vis="+citations+"&btnG=&hl=en'"+"&num="+num;
+				        +"&as_vis="+citations+"&btnG=&hl=en"+"&num="+num;
 		
 		return scholarQueryUrl;
 	}

@@ -168,11 +168,23 @@ public abstract class ScholarQuery extends Query{
 				if(phrase[i].contains(" ")){
 					phrase[i] = '"' + phrase[i] + '"';
 				}
-				sb.append(phrase[i]+" ");
+				sb.append(phrase[i]+"+");
 			}
 			return sb.toString().trim();
 		}
 		
+	}
+	
+	//use to split the string which contains whitespace
+	public String splitWhiteSpace(String str){
+		String[] newStr=str.split(" ");
+		StringBuilder sb=new StringBuilder();
+		for(int i=0;i<newStr.length;i++){
+			sb.append(newStr[i]+"+");
+		}
+		
+		sb.deleteCharAt(sb.length()-1);
+		return sb.toString();
 	}
 
 

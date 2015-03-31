@@ -259,13 +259,13 @@ public class ScholarQuerier extends Querier {
 	 * Helper method, sends HTTP request and returns response payload.
 	 */
 	public String getHttpResponse(URL url) {
-		return getHttpResponse(url, null, null);
+		return getHttpResponse(url, "", "");
 	}
 	
 	public String getHttpResponse(URL url, String log_msg, String err_msg) {
 
-		log_msg = log_msg == null ? "HTTP response data follow" : log_msg;
-		err_msg = err_msg == null ? "request failed"            : err_msg;
+		log_msg = log_msg == "" ? "HTTP response data follow" : log_msg;
+		err_msg = err_msg == "" ? "request failed"            : err_msg;
 		
 		String html = null;
 		

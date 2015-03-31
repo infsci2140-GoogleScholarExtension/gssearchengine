@@ -165,7 +165,7 @@ public class ScholarArticle extends Article {
 			
 			for(int i=0;i<t.size();i++){
 				if(t.get(i).getValue()!="none"){
-					sb.append(t.get(i).getTag()+createSpace(max_label_len-t.get(i).getTag().length()));
+					sb.append(t.get(i).getTag()+createSpace(max_label_len-t.get(i).getTag().length()+1));
 					sb.append(t.get(i).getValue());
 					sb.append("\n");
 				}

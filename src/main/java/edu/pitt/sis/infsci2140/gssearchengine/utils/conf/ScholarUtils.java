@@ -16,7 +16,7 @@ public class ScholarUtils {
      *                'debug': 4 
      *               }
 	 */
-	private static HashMap<String, Integer> LOG_LEVELS = null;
+	private static HashMap<String, Integer> LOG_LEVELS = new HashMap<String,Integer>();
 	
 	// would have problem in mutilthreading program
 	public static int getLevel(String level) {

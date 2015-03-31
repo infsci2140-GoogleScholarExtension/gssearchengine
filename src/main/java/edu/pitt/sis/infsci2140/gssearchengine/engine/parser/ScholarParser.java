@@ -19,7 +19,7 @@ public class ScholarParser extends Parser {
 	}
 	
 	private Document doc;
-	private ArrayList<ScholarArticle> articles;
+	private ArrayList<ScholarArticle> articles = new ArrayList<ScholarArticle>();
 	private String site=ScholarConf.SCHOLAR_SITE;
 	//private Pattern year_re = Pattern.compile("\r\'\\\b(?:20|19)\\d{2}\\\b\'");
 	
@@ -87,29 +87,32 @@ public class ScholarParser extends Parser {
 			
 		excerpt = gs_r.select("div.gs_rs").text();
 		
-		if(gs_r.select("div.gs_fl").select("a").first().attr("href").contains("scholar?cites=")) // if there is any citation
+		//System.out.println(gs_r.select("div.gs_fl").select("a").first().text());
+		
+		if(gs_r.select("div.gs_ri").select("div.gs_fl").select("a").first().attr("href").contains("scholar?cites=")) // if there is any citation
 		{
-			String citedUrl = gs_r.select("div.gs_fl").select("a").first().attr("href");
+			
+			String citedUrl = gs_r.select("div.gs_ri").select("div.gs_fl").select("a").first().attr("href");
 			if(citedUrl.startsWith("/"))
-				url_citations = site + '/' + citedUrl;  //get the link
+				url_citations = site + citedUrl;  //get the link
 			else
 				url_citations = citedUrl;
 			
-			cluster_id=url_citations.split("?")[1].substring(6);  // get the id  from scholar?cites=xxxxxx
+			cluster_id=url_citations.split("\\?")[1].split("\\&")[0].substring(6);  // get the id  from scholar?cites=xxxxxx
 			
-			String[] citedNum = gs_r.select("div.gs_fl").select("a").first().text().trim().split(" ");
+			String[] citedNum = gs_r.select("div.gs_ri").select("div.gs_fl").select("a").first().text().trim().split(" ");
 			citationNum = Integer.valueOf( citedNum[citedNum.length-1] );	  // find the citation number from gs_fl
 		}
 		
-		if(gs_r.select("div.gs_fl").select("a.gs_nph").first().attr("href").contains("scholar?cluster="))
+		if(gs_r.select("div.gs_ri").select("div.gs_fl").select("a.gs_nph").first().attr("href").contains("scholar?cluster="))
 		{
-			String versionUrl =  gs_r.select("div.gs_fl").select("a.gs_nph").first().attr("href"); // get the version url
+			String versionUrl =  gs_r.select("div.gs_ri").select("div.gs_fl").select("a.gs_nph").first().attr("href"); // get the version url
 			if(versionUrl.startsWith("/"))
-				url_versions = site + '/' + versionUrl;
+				url_versions = site + versionUrl;
 			else
 				url_versions = versionUrl;
 			
-			String[] verNum = gs_r.select("div.gs_fl").select("a.gs_nph").first().text().trim().split(" ");
+			String[] verNum = gs_r.select("div.gs_ri").select("div.gs_fl").select("a.gs_nph").first().text().trim().split(" ");
 			versionNum = Integer.valueOf(verNum[1]);  //get the version number from gs_fl which the first gs_nph class contains 
 		}
 		article.setItem("title", title);

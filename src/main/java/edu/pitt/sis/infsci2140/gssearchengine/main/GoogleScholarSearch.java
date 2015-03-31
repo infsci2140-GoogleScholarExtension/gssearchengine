@@ -11,19 +11,19 @@ import edu.pitt.sis.infsci2140.gssearchengine.model.query.SearchScholarQuery;
 public class GoogleScholarSearch {
 	public static void main(String[] args) 
 	{
-		String author = "albert einstein";
+//		String author = "albert einstein";
 //		String words = args[0];
 //		String someWords = args[2];
 //		String phrase = args[3];
-//		String words="Tunable emission based on lanthanide (III) metal¨Corganic frameworks: an alternative approach to white light";
+		String words="Tunable emission based on lanthanide";
 //		String cluster="17749203648027613321";
 		
 		SearchScholarQuery query = new SearchScholarQuery();
 //		ClusterScholarQuery query = new ClusterScholarQuery();
-		query.setAuthor(author);
+//		query.setAuthor(author);
 //		query.setPhrase(phrase);
 //		query.setSomeWords(someWords);
-//		query.setWords(words);
+		query.setWords(words);
 //		query.setCluster(cluster);
 		query.setNumPageResult(2);
 		System.out.println(query.getUrl());

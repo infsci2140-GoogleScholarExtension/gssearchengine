@@ -31,6 +31,7 @@ public class ScholarParser extends Parser {
 	
 	public ArrayList<ScholarArticle> parse()
 	{		
+		System.out.println(doc.select("#gs_citd").text());
 		if(getResultNum()>0)
 		{
 			for(Element gs_r : doc.select("div.gs_r")) // gs_r contains one result
@@ -64,6 +65,7 @@ public class ScholarParser extends Parser {
 		int versionNum=0;
 		int citationNum=0;
 		int year=0;
+		
 		
 		if(!gs_r.select("h3.gs_rt").select("a").isEmpty())  // if there is an <a> 
 		{
@@ -124,6 +126,9 @@ public class ScholarParser extends Parser {
 			String[] verNum = gs_r.select("div.gs_ri").select("div.gs_fl").select("a.gs_nph").first().text().trim().split(" ");
 			versionNum = Integer.valueOf(verNum[1]);  //get the version number from gs_fl which the first gs_nph class contains 
 		}
+		
+		url_citation=gs_r.select("div.gs_ri").select("div.gs_fl").select("a[onclick]").attr("onclick").toString().split("'")[1];
+		
 		article.setItem("title", title);
 		article.setItem("year", year);
 		article.setItem("url", url);

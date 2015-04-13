@@ -8,11 +8,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.HttpURLConnection;
 
+import javax.sound.midi.MidiDevice.Info;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import edu.pitt.sis.infsci2140.gssearchengine.utils.conf.*;
+import edu.pitt.sis.infsci2140.gssearchengine.utils.error.FormatError;
 import edu.pitt.sis.infsci2140.gssearchengine.engine.parser.ScholarParser;
 import edu.pitt.sis.infsci2140.gssearchengine.model.article.*;
 import edu.pitt.sis.infsci2140.gssearchengine.model.query.*;
@@ -203,17 +206,47 @@ public class ScholarQuerier extends Querier {
 		if (art.getItem("url_citation") == null) {
 			return false;
 		}	
+		if (this.settings == null || this.settings.getCitform() == 0) {
+			return false;
+		}
 		if (art.getCitationData() != null) {
 			return true;
 		}
+		
 			
 		
 		String data = null;
 		ScholarUtils.log("info", "retrieving citation export data");
 		
+		
+		// get citation data div
+		String citiHtml;
 		URL url = null;
 		try {
-			url = new URL((String) art.getItem("url_citation")); // article['url_citation']
+			String info = (String) art.getItem("url_citation");
+			String CITIDIV = "https://scholar.google.com/scholar?q=info:" + info + ":scholar.google.com/&output=cite&scirp=0&hl=zh-CN"; 
+			art.setItem("url_citation", CITIDIV);
+			url = new URL(CITIDIV); // article['url_citation']
+		} catch (MalformedURLException e) {
+			ScholarUtils.log("erro", e.getMessage());
+			return false;
+		}
+		citiHtml = this.getHttpResponse(url,
+                "citation data response",
+                "requesting citation data failed");
+		if (citiHtml == null) return false;
+		
+		
+		// get citation data
+		url = null;
+		try {
+			int format = this.settings.getCitform();
+			
+			Document citiDoc = Jsoup.parse (citiHtml);
+			
+			String citiURL = citiDoc.select("#gs_citi").select("a.gs_citi").get(format-1).attr("href"); 
+			
+			url = new URL("https://scholar.google.com" + citiURL); // citation data url
 		} catch (MalformedURLException e) {
 			ScholarUtils.log("erro", e.getMessage());
 			return false;
@@ -303,6 +336,7 @@ public class ScholarQuerier extends Querier {
 			
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestProperty("User-Agent", ScholarConf.USER_AGENT);
+			connection.setRequestProperty("Cookie", "PREF=ID=2c3b7553758d0a8a:U=982a5bd4ec9e589f:TM=1411619673:LM=1428025690:S=4CMZ0jJ2Asvz3-uT; NID=67=r6HK6aP8yM5bpe2tfQ9JXEwvEt39dR7mHw5vMRz0M9N6QD9fZj2zV0eYIy-qoKmALQirv4fDQPDffTpDxGYLUvQaxTdWbPEQMR9Q6ZivcKFoxEa1E-rhRVTHxMjFnvAlQ-JcD4Ri_ftA6ZN_mgcyxycSIWgpxHhs; GSP=ID=2c3b7553758d0a8a:LM=1428876023:S=rr2W5rGrPxqVyCBD; OGPC=5061492-1:");
 			
 			BufferedReader in = new BufferedReader
                     (new InputStreamReader(connection.getInputStream(), "UTF-8"));

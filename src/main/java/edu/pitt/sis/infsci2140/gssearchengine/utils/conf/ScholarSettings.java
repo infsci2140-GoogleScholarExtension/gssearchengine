@@ -12,10 +12,10 @@ import edu.pitt.sis.infsci2140.gssearchengine.utils.error.FormatError;
  */
 public class ScholarSettings {
 	public static final int CITFORM_NONE = 0;
-	public static final int	CITFORM_REFWORKS = 1;
-	public static final int CITFORM_REFMAN = 2;
-	public static final int CITFORM_ENDNOTE = 3;
-	public static final int	CITFORM_BIBTEX = 4;
+	public static final int	CITFORM_REFWORKS = 4;
+	public static final int CITFORM_REFMAN = 3;
+	public static final int CITFORM_ENDNOTE = 2;
+	public static final int	CITFORM_BIBTEX = 1;
 	
 	private boolean isConfigured = false;
 	private int citform = 0;
@@ -26,7 +26,7 @@ public class ScholarSettings {
 	}
 	
 	public void setCitationFormat(int citform) throws FormatError {
-		if (citform < 0 || citform > ScholarSettings.CITFORM_BIBTEX)
+		if (citform < 0 || citform > ScholarSettings.CITFORM_REFWORKS)
 			throw new FormatError("citation format invalid, is " + citform);
 		this.citform = citform;
 		this.isConfigured = true;

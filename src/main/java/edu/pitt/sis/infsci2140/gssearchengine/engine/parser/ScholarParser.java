@@ -30,8 +30,7 @@ public class ScholarParser extends Parser {
 
 	
 	public ArrayList<ScholarArticle> parse()
-	{		
-		System.out.println(doc.select("#gs_citd").text());
+	{	
 		if(getResultNum()>0)
 		{
 			for(Element gs_r : doc.select("div.gs_r")) // gs_r contains one result

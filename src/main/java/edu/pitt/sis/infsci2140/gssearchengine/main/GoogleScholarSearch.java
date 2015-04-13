@@ -42,6 +42,7 @@ public class GoogleScholarSearch {
 		
 		ArrayList<ScholarArticle> articles = querier.sendQuery(query);
 		querier.getCitationData(articles.get(0));
+		
 //		System.out.println(querier);
 		System.out.println(articles.get(0).getCitationData());
 		System.out.println("-------------------");

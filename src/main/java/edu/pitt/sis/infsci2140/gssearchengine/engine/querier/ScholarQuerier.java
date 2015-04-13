@@ -8,11 +8,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.HttpURLConnection;
 
+import javax.sound.midi.MidiDevice.Info;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import edu.pitt.sis.infsci2140.gssearchengine.utils.conf.*;
+import edu.pitt.sis.infsci2140.gssearchengine.utils.error.FormatError;
 import edu.pitt.sis.infsci2140.gssearchengine.engine.parser.ScholarParser;
 import edu.pitt.sis.infsci2140.gssearchengine.model.article.*;
 import edu.pitt.sis.infsci2140.gssearchengine.model.query.*;
@@ -203,17 +206,48 @@ public class ScholarQuerier extends Querier {
 		if (art.getItem("url_citation") == null) {
 			return false;
 		}	
+		if (this.settings == null || this.settings.getCitform() == 0) {
+			return false;
+		}
 		if (art.getCitationData() != null) {
 			return true;
 		}
+		
 			
 		
 		String data = null;
 		ScholarUtils.log("info", "retrieving citation export data");
 		
+		
+		// get citation data div
+		String citiHtml;
 		URL url = null;
 		try {
-			url = new URL((String) art.getItem("url_citation")); // article['url_citation']
+			String info = (String) art.getItem("url_citation");
+			String CITIDIV = "https://scholar.google.com/scholar?q=info:" + info + ":scholar.google.com/&output=cite&scirp=0&hl=zh-CN"; 
+			url = new URL(CITIDIV); // article['url_citation']
+		} catch (MalformedURLException e) {
+			ScholarUtils.log("erro", e.getMessage());
+			return false;
+		}
+		citiHtml = this.getHttpResponse(url,
+                "citation data response",
+                "requesting citation data failed");
+		if (citiHtml == null) return false;
+		
+		
+		// get citation data
+		url = null;
+		try {
+			int format = 0;
+			format = this.settings.getCitform();
+			
+			Document citiDoc = Jsoup.parse (citiHtml);
+			
+			String citiURL = citiDoc.select("#gs_citi").select("a.gs_citi").get(format-1).attr("href"); 
+			
+			System.out.println(citiURL);
+			url = new URL(citiURL); // article['url_citation']
 		} catch (MalformedURLException e) {
 			ScholarUtils.log("erro", e.getMessage());
 			return false;

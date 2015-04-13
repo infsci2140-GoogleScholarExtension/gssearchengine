@@ -34,16 +34,16 @@ public class GoogleScholarSearch {
 		try {
 			setting.setCitationFormat(4);
 		} catch (FormatError e) {
-			// TODO ×Ô¶¯Éú³ÉµÄ catch ¿é
+			// TODO ï¿½Ô¶ï¿½ï¿½ï¿½Éµï¿½ catch ï¿½ï¿½
 			e.printStackTrace();
 		}
 		
 		querier.applySettings(setting);
 		
 		ArrayList<ScholarArticle> articles = querier.sendQuery(query);
-		querier.getCitationData(articles.get(0));
+//		querier.getCitationData(articles.get(0));
 		//System.out.println(querier);
-		System.out.println(articles.get(0).getCitationData());
+//		System.out.println(articles.get(0).getCitationData());
 		System.out.println("-------------------");
 		if(articles != null)
 			System.out.println(articles.get(0).asTxt());

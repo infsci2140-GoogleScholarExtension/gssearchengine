@@ -34,7 +34,7 @@ public class GoogleScholarSearch {
 		try {
 			setting.setCitationFormat(3);
 		} catch (FormatError e) {
-			// TODO �Զ���ɵ� catch ��
+			// 
 			e.printStackTrace();
 		}
 		

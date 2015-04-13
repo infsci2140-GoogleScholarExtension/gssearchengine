@@ -244,10 +244,9 @@ public class ScholarQuerier extends Querier {
 			
 			Document citiDoc = Jsoup.parse (citiHtml);
 			
-			String citiURL = citiDoc.select("#gs_citi").select("a.gs_citi").get(format-1).attr("href"); 
+			String citiURL = citiDoc.select("#gs_citi").select("a.gs_citi").get(0).attr("href"); 
 			
-			System.out.println(citiURL);
-			url = new URL(citiURL); // article['url_citation']
+			url = new URL("https://scholar.google.com" + citiURL); // article['url_citation']
 		} catch (MalformedURLException e) {
 			ScholarUtils.log("erro", e.getMessage());
 			return false;

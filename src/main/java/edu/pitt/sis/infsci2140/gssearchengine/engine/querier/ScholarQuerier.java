@@ -338,6 +338,9 @@ public class ScholarQuerier extends Querier {
 			connection.setRequestProperty("User-Agent", ScholarConf.USER_AGENT);
 			connection.setRequestProperty("Cookie", "PREF=ID=2c3b7553758d0a8a:U=982a5bd4ec9e589f:TM=1411619673:LM=1428025690:S=4CMZ0jJ2Asvz3-uT; NID=67=r6HK6aP8yM5bpe2tfQ9JXEwvEt39dR7mHw5vMRz0M9N6QD9fZj2zV0eYIy-qoKmALQirv4fDQPDffTpDxGYLUvQaxTdWbPEQMR9Q6ZivcKFoxEa1E-rhRVTHxMjFnvAlQ-JcD4Ri_ftA6ZN_mgcyxycSIWgpxHhs; GSP=ID=2c3b7553758d0a8a:LM=1428876023:S=rr2W5rGrPxqVyCBD; OGPC=5061492-1:");
 			
+			String cookie = connection.getRequestProperty("Cookie");
+			System.out.println(cookie);
+			
 			BufferedReader in = new BufferedReader
                     (new InputStreamReader(connection.getInputStream(), "UTF-8"));
             

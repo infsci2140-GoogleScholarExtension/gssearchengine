@@ -216,7 +216,7 @@ public class ScholarArticle extends Article {
          * citation export format. (See ScholarSettings.)
 		 */
 		public String asCitation(){
-			if(this.citationData!=""){
+			if(!this.citationData.equals("")){
 				return this.citationData;
 			}
 			return "";

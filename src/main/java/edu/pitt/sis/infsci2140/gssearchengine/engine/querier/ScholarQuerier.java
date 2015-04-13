@@ -239,14 +239,13 @@ public class ScholarQuerier extends Querier {
 		// get citation data
 		url = null;
 		try {
-			int format = 0;
-			format = this.settings.getCitform();
+			int format = this.settings.getCitform();
 			
 			Document citiDoc = Jsoup.parse (citiHtml);
 			
-			String citiURL = citiDoc.select("#gs_citi").select("a.gs_citi").get(0).attr("href"); 
+			String citiURL = citiDoc.select("#gs_citi").select("a.gs_citi").get(format-1).attr("href"); 
 			
-			url = new URL("https://scholar.google.com" + citiURL); // article['url_citation']
+			url = new URL("https://scholar.google.com" + citiURL); // citation data url
 		} catch (MalformedURLException e) {
 			ScholarUtils.log("erro", e.getMessage());
 			return false;

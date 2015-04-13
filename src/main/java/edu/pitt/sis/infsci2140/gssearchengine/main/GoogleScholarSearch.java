@@ -32,7 +32,7 @@ public class GoogleScholarSearch {
 		ScholarQuerier querier = new ScholarQuerier();
 		ScholarSettings setting = new ScholarSettings();
 		try {
-			setting.setCitationFormat(4);
+			setting.setCitationFormat(1);
 		} catch (FormatError e) {
 			// TODO �Զ���ɵ� catch ��
 			e.printStackTrace();

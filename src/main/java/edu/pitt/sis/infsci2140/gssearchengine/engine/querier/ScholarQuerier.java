@@ -225,7 +225,7 @@ public class ScholarQuerier extends Querier {
 		try {
 			String info = (String) art.getItem("url_citation");
 			String CITIDIV = "https://scholar.google.com/scholar?q=info:" + info + ":scholar.google.com/&output=cite&scirp=0&hl=zh-CN"; 
-			art.setItem("url_citation", CITIDIV);
+//			art.setItem("url_citation", CITIDIV);
 			url = new URL(CITIDIV); // article['url_citation']
 		} catch (MalformedURLException e) {
 			ScholarUtils.log("erro", e.getMessage());

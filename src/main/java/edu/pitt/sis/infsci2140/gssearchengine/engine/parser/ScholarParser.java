@@ -23,7 +23,7 @@ public class ScholarParser extends Parser {
 	private String site=ScholarConf.SCHOLAR_SITE;
 	//private Pattern year_re = Pattern.compile("\r\'\\\b(?:20|19)\\d{2}\\\b\'");
 	
-
+	
 	public ArrayList<ScholarArticle> getArticle() {
 		return articles;
 	}
@@ -38,7 +38,7 @@ public class ScholarParser extends Parser {
 				if(gs_r.select("table[cellspacing]").size()==0)
 				{
 					ScholarArticle article = new ScholarArticle();
-					getArticleInfo(gs_r,article);  //do parse the infomantion
+					getArticleInfo(gs_r,article);  //do parse the information
 					articles.add(article);
 				}
 			}
@@ -79,16 +79,41 @@ public class ScholarParser extends Parser {
 		
 		if(gs_r.select("div.gs_a").text().split("-").length>2)
 		{
-			String years=gs_r.select("div.gs_a").text().split("-")[1];  // split by -, gs_a contains year
-			if(years.trim().contains(" "))    // if there is something else
-			{
-				String[] y = years.split(" ");  //get rid of them
-				year = Integer.valueOf(y[y.length-1]);
-			}
-			else
-				year = Integer.valueOf(years.trim());  //get the year
-		}
+                        String years=gs_r.select("div.gs_a").text();
+                        if(years.contains(" - "))
+                        {                        
+                            int head = years.indexOf(" - ");
+                            int tail = years.indexOf(" - ", head+3);
+                            if(tail==-1)
+                                tail=years.length();
+                            years=years.substring(head+3, tail);
 
+                            //String years=gs_r.select("div.gs_a").text().split("-")[1];  // split by -, gs_a contains year
+
+                            if(years.trim().contains(" "))    // if there is something else
+                            {
+                                    String[] y = years.split(" ");  //get rid of them
+                                    year = Integer.valueOf(y[y.length-1]);
+                            }
+                            else
+                                    year = Integer.valueOf(years.trim());  //get the year
+                        }
+                        else{
+                            
+                        }
+		}
+                else if(gs_r.select("div.gs_a").text().split("-").length==2)
+                {
+                    String years=gs_r.select("div.gs_a").text().split("-")[1];
+
+                    if(years.trim().contains(" "))    // if there is something else
+                    {
+                            String[] y = years.split(" ");  //get rid of them
+                            year = Integer.valueOf(y[y.length-1]);
+                    }
+                    else
+                            year = Integer.valueOf(years.trim());  
+                }
 		
 		if(gs_r.select("div").first().className().contains("gs_ri"))  
 			url_pdf="";
